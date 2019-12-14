@@ -1,0 +1,182 @@
+import java.util.Scanner;
+
+public class AlgebraTutor {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		int entry = 0;
+	  while (entry != 4) {
+		Scanner user_input = new Scanner(System.in);
+		System.out.println();
+		System.out.println("Choose question type:");
+		System.out.println("1) Solve for y  2) Solve for m "
+				+ "3) Solve for b 4) Quit: ");
+		
+	    entry = user_input.nextInt();
+		//System.out.println("You chose: " + entry);
+		
+		if (entry == 1) {
+			solveForY();
+		} else if (entry == 2) {
+			solveForM();	
+		} else if (entry == 3){
+			solveForB();	
+		} else if (entry == 4) {
+			System.out.println("Goodbye");	
+		} else {
+			System.out.println("Invalid Selection");	
+		}
+	  }
+		
+	}
+	public static void solveForY() {
+		int correct_count =0;
+		int total_correct =0;
+		int attempts = 0;
+	  while (correct_count < 3) {
+		double m = Math.random() * 10;
+		int int_m = (int)m;
+		double x = Math.random() * 10;
+		int int_x = (int)x;
+		double b = Math.random() * 10;
+		int int_b = (int)b;
+		double y = int_m *int_x + int_b;
+		int  int_y = (int)y;
+		
+		System.out.println("Given y = mx + b:");
+		System.out.println();
+		// System.out.println(m);
+		System.out.println("m = " + int_m);
+		// System.out.println(x);
+		System.out.println("x = " + int_x);
+		// System.out.println(b);
+		System.out.println("b = " + int_b);
+		
+		Scanner user_input = new Scanner(System.in);
+		System.out.println();
+		System.out.print("What is the value of y? ");
+		
+		int entry = user_input.nextInt();
+		//System.out.println("Entry is:" + entry);
+			
+		//System.out.println(y);
+		//System.out.println();
+		if (entry == int_y) {
+			System.out.println("Correct!");
+			correct_count = correct_count +1;
+		    total_correct = total_correct +1;
+			attempts = attempts + 1;
+		} else {
+			System.out.println("Sorry, that is incorrect. The answer is " + int_y + ".");
+			correct_count = 0;
+			attempts = attempts + 1;
+			if (attempts >= 3) {
+				System.out.println("Hint: Multipy m and x together, then add b to that.");
+			}// end if statement
+		}// end if/else
+	  }// end while loop
+	  double score = (float)total_correct / (float)attempts;
+	  System.out.println("Score: " + score);			
+	}// end solveForY
+	
+	public static void solveForB() {
+		int correct_count =0;
+		int total_correct =0;
+		int attempts = 0;
+	  while (correct_count < 3) {
+		double y = Math.random() * 100;
+		int int_y = (int)y;
+		double x = Math.random() * 10;
+		int int_x = (int)x;
+		double m = Math.random() * 10;
+		int int_m = (int)m;
+		double b = int_y - (int_m * int_x);
+		int  int_b = (int)b;
+		
+		System.out.println("Given y = mx + b:");
+		System.out.println();
+		// System.out.println(m);
+		System.out.println("m = " + int_m);
+		// System.out.println(x);
+		System.out.println("x = " + int_x);
+		// System.out.println(b);
+		System.out.println("y = " + int_y);
+		
+		Scanner user_input = new Scanner(System.in);
+		System.out.println();
+		System.out.print("What is the value of b? ");
+		
+		int entry = user_input.nextInt();
+		//System.out.println("Entry is:" + entry);
+			
+		//System.out.println(y);
+		//System.out.println();
+		if (entry == int_b) {
+			System.out.println("Correct!");
+			correct_count = correct_count +1;
+		    total_correct = total_correct +1;
+			attempts = attempts + 1;
+		} else {
+			System.out.println("Sorry, that is incorrect. The answer is " + int_b + ".");
+			correct_count = 0;
+			attempts = attempts + 1;
+			if (attempts >= 3) {
+				System.out.println("Hint: b = y-(m*x)");
+			}//end if
+		}//end if/else
+	  }//end while
+	  double score = (float)total_correct / (float)attempts;
+	  System.out.println("Score: " + score);
+	}//end solveForB
+	
+	public static void solveForM() {
+		int correct_count =0;
+		int total_correct =0;
+		int attempts = 0;
+	  while (correct_count < 3) {
+		double m = Math.random() * 10;
+		int int_m = (int)m;
+		double x = Math.random() * 10 + 1;
+		int int_x = (int)x;
+		double b = Math.random() * 10;
+		int int_b = (int)b;
+		double y  = int_m * int_x + int_b;
+		int  int_y = (int)y;
+		
+		System.out.println("Given y = mx + b:");
+		System.out.println();
+		// System.out.println(m);
+		System.out.println("x = " + int_x);
+		// System.out.println(x);
+		System.out.println("b = " + int_b);
+		// System.out.println(b);
+		System.out.println("y = " + int_y);
+		
+		Scanner user_input = new Scanner(System.in);
+		System.out.println();
+		System.out.print("What is the value of m? ");
+		
+		int entry = user_input.nextInt();
+		//System.out.println("Entry is:" + entry);
+			
+		//System.out.println(y);
+		//System.out.println();
+		if (entry == int_m) {
+			System.out.println("Correct!");
+			correct_count = correct_count +1;
+		    total_correct = total_correct +1;
+			attempts = attempts + 1;
+		} else {
+			System.out.println("Sorry, that is incorrect. The answer is " + int_m + ".");
+			correct_count = 0;
+			attempts = attempts + 1;
+			if (attempts >= 3) {
+				System.out.println("Hint: m = (y-b)/x");
+			}
+		}//end else statement
+	  }//end while loop
+	  double score = (float)total_correct / (float)attempts;
+	  System.out.println("Score: " + score);		
+	}//end solveForM
+	
+}//end class Main
