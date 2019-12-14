@@ -1,0 +1,99 @@
+import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
+class PeppersPillMill{
+    public static void main (String[] args) throws IOException{
+        // instantiate objects instances (test groups)
+        TrialGroup data1 = new TrialGroup("data1.dat");
+        TrialGroup data2 = new TrialGroup("data2.dat");
+        TrialGroup data3 = new TrialGroup("data3.dat");
+        
+        //get file name of each object instance (each test group)
+        String fn1 = data1.getFileName();
+        String fn2 = data2.getFileName();
+        String fn3 = data3.getFileName();
+        
+        //get average of each object instance (each test group)
+        double av1 = data1.getAverage();
+        double av2 = data2.getAverage();
+        double av3 = data3.getAverage();
+        
+        //get standard deviation of each object instance (each test group)
+        double sd1 = data1.getStandardDeviation();
+        double sd2 = data2.getStandardDeviation();
+        double sd3 = data3.getStandardDeviation();
+        
+        //compare significant difference between groups
+        boolean group1VsGroup2 = Math.abs(av1 - av2) > sd1 && Math.abs(av1 - av2) > sd2;
+        boolean group1VsGroup3 = Math.abs(av1 - av3) > sd1 && Math.abs(av1 - av3) > sd3;
+        boolean group2VsGroup3 = Math.abs(av2 - av3) > sd2 && Math.abs(av1 - av3) > sd3;
+        
+        // writing everything to output file
+        FileWriter output_file = new FileWriter("output.txt");
+    	BufferedWriter output_buffer = new BufferedWriter(output_file);
+        
+        //System.out.println(fn1 + ": average=  " + av1 + ", standard deviation= " + sd1);
+        output_buffer.write("Statistics: \n");
+        output_buffer.write(fn1 + ": average  =  " + av1 + ", standard deviation= " + sd1 + "\n");
+        output_buffer.write(fn2 + ": average =  " + av2 + ", standard deviation= " + sd2 + "\n");
+        output_buffer.write(fn3 + ": average =  " + av3 + ", standard deviation= " + sd3 + "\n");
+        output_buffer.write("\n");
+        output_buffer.write("Results: \n");
+        output_buffer.write(fn1 + " vs. " + fn2 + " " + group1VsGroup2 + "\n");
+        output_buffer.write(fn1 + " vs. " + fn3 + " " + group1VsGroup3 + "\n");
+        output_buffer.write(fn2 + " vs. " + fn3 + " " + group2VsGroup3 + "\n");
+        
+        output_buffer.close();
+        //System.out.println("Output complete!");
+        
+    }   
+}
+
+class TrialGroup{
+    private int count =0;
+    private int sum = 0;
+    private int sumOfSquares = 0;
+    private String fileName;
+    
+	public TrialGroup(String fileName)throws IOException {   
+		this.fileName = fileName;
+        Scanner file_input = new Scanner(new File(this.fileName));
+        String current_line = "";
+        getFileName();
+        while(file_input.hasNext()){ 
+            current_line = file_input.nextLine();
+            int current_line_int = Integer.parseInt(current_line);
+            //System.out.println("Line " + count + ": " + current_line_int + );
+            sum = sum + current_line_int;
+            sumOfSquares = sumOfSquares + current_line_int * current_line_int;
+            count++;
+            //System.out.println("Line " + count + ": " + "current sum: " + sum + "  current sum of squares: " + sumOfSquares);
+            
+        }// end while loop
+    }//end constructor
+    
+    public double getAverage() {
+	    double average = 1.0 * sum / count;
+        return average;
+	    }
+    
+    public double getStandardDeviation() {
+        double average = getAverage();
+        double squareOfAverage = average * average;
+        double averageOfSquares = 1.0 * sumOfSquares / count;
+        double standardDeviation = Math.sqrt(averageOfSquares - squareOfAverage) ;
+        //System.out.println(standardDeviation + " is the Standard Deviation");
+        return standardDeviation;
+	    }
+    
+    public String getFileName() throws IOException{
+	    //System.out.print(this.fileName);
+        //System.out.println(" is the source file:");
+        return this.fileName;
+	    }
+    
+    
+}//end class TrialGroup
