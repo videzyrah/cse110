@@ -1,0 +1,220 @@
+import java.util.Scanner;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
+public class VerdeVolleyball {
+
+	public static void main(String[] args) throws IOException{
+		// TODO Auto-generated method stub
+		Scanner menu_input = new Scanner(System.in);
+		Scanner file_input = new Scanner(System.in);
+		int entry = 0;
+	    boolean roster_loaded = false;
+		VolleyballTeam current_team = new VolleyballTeam();
+	  while (entry != 5) {
+		System.out.println("1) Open a Roster\n2) List Top 3 Attackers\n3) List Top  Blockers\n4) Make and Display Scrimmage Teams\n5) Quit");	
+		entry = menu_input.nextInt();				
+			if (entry == 1) {
+				System.out.println("Enter FileName to load Roster");
+				String roster_file = file_input.nextLine();
+				//String rosterFile = "coachesData.txt";
+				roster_loaded = true;
+				current_team = new VolleyballTeam(roster_file);
+			} else if (entry == 2) {
+				if (roster_loaded == false) {
+					System.out.println("Please open a roster");
+				}//end nested if
+				else {
+					current_team.findTopThreeAttackers();
+				}// end nested else				
+			} else if (entry == 3){
+				if (roster_loaded == false) {
+					System.out.println("Please open a roster");
+				}//end nested if
+				else {
+					current_team.findTopThreeBlockers();
+				}//end nested else				
+			} else if (entry == 4) {
+				if (roster_loaded == false) {
+					System.out.println("Please open a roster");
+				}
+				else {
+					current_team.makeScrimmageTeams();
+				}							
+			} else if (entry == 5) {
+				System.out.println("Goodbye");
+			} else {
+				System.out.println("Invalid Selection");	
+			}
+		  }// end while loop			
+	}//end Main method
+
+}//end MainProgram class
+
+class VolleyballTeam {
+	
+	private String file_name;
+	
+	
+	public VolleyballTeam() {
+	}
+	//Remember: (because it is a class) Player is a data type here
+	ArrayList<Player> player_list = new ArrayList<Player>(); 
+	public VolleyballTeam(String file_name)throws IOException {
+		this.file_name = file_name;
+		int line_count = 0;
+		String current_line = "";
+		Scanner file_input = new Scanner(new File(file_name));
+		while(file_input.hasNext()){ 
+			Player current_player = new Player();
+			current_player.first_name = file_input.next();
+			current_player.last_name = file_input.next();
+			current_player.attacks_per_set = file_input.nextDouble();
+			current_player.blocks_per_set = file_input.nextDouble();
+			player_list.add(current_player);      
+		}        
+		System.out.println("Roster Loaded!");
+		System.out.println("");
+	}
+	public void findTopThreeAttackers() {
+		sortByAttacks();
+		Player player1 = player_list.get(0);
+		Player player2 = player_list.get(1);
+		Player player3 = player_list.get(2);
+		System.out.println("Top Three Attackers");
+		System.out.println(player1.first_name + " " + player1.last_name + " Attacks Per Set: " + player1.attacks_per_set + " | Blocks Per Set: " + player1.blocks_per_set);
+		System.out.println(player2.first_name + " " + player2.last_name + " Attacks Per Set: " + player2.attacks_per_set + " | Blocks Per Set: " + player2.blocks_per_set);
+		System.out.println(player3.first_name + " " + player3.last_name + " Attacks Per Set: " + player3.attacks_per_set + " | Blocks Per Set: " + player3.blocks_per_set);
+		System.out.println("");		
+	}
+	
+	public ArrayList<Player> sortByAttacks() {
+	    int player_list_size = player_list.size();
+	    int index = 0;
+	    for (int sort_iters =0; sort_iters < player_list_size; sort_iters++) {
+	    	for(index = 0; index < player_list_size - sort_iters - 1; index ++) {
+	    		Player index_player = player_list.get(index);
+	    		Player next_index_player = player_list.get(index +1);
+	    		if(index_player.attacks_per_set < next_index_player.attacks_per_set) {
+	    			//Swap
+	    			player_list.set(index, next_index_player);
+	    			player_list.set(index + 1 , index_player);   			
+	    		}
+	    	}
+	    }
+	    return player_list;	    
+	}//end sort by attacks
+	
+	public String findTopThreeBlockers() {
+		sortByBlocks();
+		Player player1 = player_list.get(0);
+		Player player2 = player_list.get(1);
+		Player player3 = player_list.get(2);
+		System.out.println("Top Three Blockers");
+		System.out.println(player1.first_name + " " + player1.last_name + " Attacks Per Set: " + player1.attacks_per_set + " | Blocks Per Set: " + player1.blocks_per_set);
+		System.out.println(player2.first_name + " " + player2.last_name + " Attacks Per Set: " + player2.attacks_per_set + " | Blocks Per Set: " + player2.blocks_per_set);
+		System.out.println(player3.first_name + " " + player3.last_name + " Attacks Per Set: " + player3.attacks_per_set + " | Blocks Per Set: " + player3.blocks_per_set);
+		System.out.println("");		
+		return "topthreeblockers";	
+	}
+	
+	public  ArrayList<Player> sortByBlocks() {
+		int player_list_size = player_list.size();
+	    int index = 0;
+	    for (int sort_iters =0; sort_iters < player_list_size; sort_iters++) {
+	    	for(index = 0; index < player_list_size - sort_iters - 1; index ++) {
+	    		Player index_player = player_list.get(index);
+	    		Player next_index_player = player_list.get(index +1);
+	    		if(index_player.blocks_per_set < next_index_player.blocks_per_set) {
+	    			//Swap
+	    			player_list.set(index, next_index_player);
+	    			player_list.set(index + 1 , index_player);   			
+	    		}
+	    	}
+	    }
+	    return player_list;	 
+	}//end sort by blocks
+	public void makeScrimmageTeams(){
+		ArrayList<Player> team_1 = new ArrayList<Player>();
+		ArrayList<Player> team_2 = new ArrayList<Player>();
+		ArrayList<Player> team_3 = new ArrayList<Player>();
+		ArrayList<Player> team_4 = new ArrayList<Player>();
+		int player_list_size = player_list.size();
+		int number_of_teams = player_list_size / 6;
+		sortByAttacks();
+		//team_1 attackers
+		team_1.add(player_list.get(0));
+		team_1.add(player_list.get(number_of_teams));
+		team_1.add(player_list.get(2* number_of_teams));		
+		//team_2 attackers
+		team_2.add(player_list.get(1));
+		team_2.add(player_list.get(1 + number_of_teams));
+		team_2.add(player_list.get(1+ 2*number_of_teams));		
+		if (number_of_teams > 2) {
+			//team_3 attackers
+			team_3.add(player_list.get(2));
+			team_3.add(player_list.get(2 + number_of_teams));
+			team_3.add(player_list.get(2 + 2*number_of_teams));				
+		}
+		if (number_of_teams > 3) {
+			//team_4 attackers
+			team_4.add(player_list.get(3));
+			team_4.add(player_list.get(3 + number_of_teams));
+			team_4.add(player_list.get(3 + 2*number_of_teams));			
+		}
+		// removing assigned best attackers from player_list
+		for (int index = 3*number_of_teams - 1; index >= 0; index --){
+			player_list.remove(index);
+		}
+		//assign rest of players by best blockers
+		sortByBlocks();
+		//team 1 blockers
+		team_1.add(player_list.get(0));
+		team_1.add(player_list.get(number_of_teams));
+		team_1.add(player_list.get(2* number_of_teams));		
+		System.out.println("Scrimmage Team 1:");
+		for (Player player : team_1) {		
+			System.out.println(player.first_name + " " + player.last_name);
+		}
+		//team 2 blockers
+		team_2.add(player_list.get(1));
+		team_2.add(player_list.get(1 + number_of_teams));
+		team_2.add(player_list.get(1+ 2*number_of_teams));	
+		System.out.println("");
+		System.out.println("Scrimmage Team 2:");
+		for (Player player : team_2) {		
+			System.out.println(player.first_name + " " + player.last_name);
+		}
+		if (number_of_teams > 2) {
+			//team 3 blockers
+			team_3.add(player_list.get(2));
+			team_3.add(player_list.get(2 + number_of_teams));
+			team_3.add(player_list.get(2 + 2*number_of_teams));
+			System.out.println("");
+			System.out.println("Scrimmage Team 3:");
+			for (Player player : team_3) {		
+				System.out.println(player.first_name + " " + player.last_name);
+			}		
+		}
+		if (number_of_teams > 3) {
+			//team 4 blockers
+			team_4.add(player_list.get(3));
+			team_4.add(player_list.get(3 + number_of_teams));
+			team_4.add(player_list.get(3 + 2*number_of_teams));
+			System.out.println("");
+			System.out.println("Scrimmage Team 4:");
+			for (Player player : team_4) {		
+				System.out.println(player.first_name + " " + player.last_name);
+			}		
+		}	
+	}
+	
+}// end class VolleyBallTeam
+
+class Player{
+    String first_name = "";
+	String last_name  = "";
+	double attacks_per_set;
+	double blocks_per_set;
+}
